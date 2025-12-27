@@ -1,7 +1,7 @@
 const EXCHANGE_RATE = 1.95583;
 let currentInput = "";
-let isMuted = false;
 
+// Поддръжка на гласово разпознаване (включително за мобилни телефони)
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = null;
 
@@ -11,6 +11,7 @@ if (SpeechRecognition) {
     recognition.interimResults = false;
 
     recognition.onerror = function(event) {
+        console.error("Грешка при микрофона:", event.error);
         stopMicAnimation();
         recognition.stop();
     };
@@ -28,7 +29,6 @@ if (SpeechRecognition) {
 function appendNumber(number) {
     currentInput += number;
     updateDisplay();
-    speak(number);
 }
 
 function updateDisplay() {
@@ -44,28 +44,11 @@ function updateDisplay() {
 function clearDisplay() {
     currentInput = "";
     updateDisplay();
-    speak("Изчистване");
-}
-
-function speak(text) {
-    if (isMuted || !window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'bg-BG';
-    window.speechSynthesis.speak(utterance);
-}
-
-function toggleMute() {
-    isMuted = !isMuted;
-    const muteBtn = document.getElementById('mute-btn');
-    if (muteBtn) {
-        muteBtn.innerText = isMuted ? '🔇' : '🔊';
-    }
 }
 
 function startVoice() {
     if (!recognition) {
-        alert("Браузърът не поддържа глас.");
+        alert("Вашият браузър не поддържа гласово въвеждане.");
         return;
     }
     try {
@@ -78,18 +61,20 @@ function startVoice() {
 }
 
 function processVoiceCommand(cmd) {
+    // Вземаме само цифрите от казаното
     const num = cmd.replace(/[^0-9]/g, '');
     if (num) {
         currentInput = num;
         updateDisplay();
-        speak(num + " лева");
     }
 }
 
 function startMicAnimation() {
-    document.getElementById('mic-btn').classList.add('pulse');
+    const micBtn = document.getElementById('mic-btn');
+    if (micBtn) micBtn.classList.add('pulse');
 }
 
 function stopMicAnimation() {
-    document.getElementById('mic-btn').classList.remove('pulse');
-} // ТАЗИ СКОБА ЛИПСВАШЕ И ПРАВЕШЕ ПРОБЛЕМА!
+    const micBtn = document.getElementById('mic-btn');
+    if (micBtn) micBtn.classList.remove('pulse');
+}
