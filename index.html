@@ -10,6 +10,7 @@
         input { width: 80%; padding: 10px; margin: 10px 0; font-size: 1.5rem; text-align: center; border-radius: 5px; border: none; }
         .buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 10px; }
         button { padding: 15px; font-size: 1.2rem; cursor: pointer; border-radius: 8px; border: none; background: #0074D9; color: white; }
+        button:hover { background: #0056b3; }
         #mic-btn.pulse { background: red; animation: pulse 1s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
@@ -25,15 +26,18 @@
             <button onclick="appendNumber('7')">7</button>
             <button onclick="appendNumber('8')">8</button>
             <button onclick="appendNumber('9')">9</button>
-            <button id="mute-btn" onclick="toggleMute()">🔊</button>
+            <button onclick="clearDisplay()">C</button>
+
             <button onclick="appendNumber('4')">4</button>
             <button onclick="appendNumber('5')">5</button>
             <button onclick="appendNumber('6')">6</button>
             <button id="mic-btn" onclick="startVoice()">🎤</button>
+
             <button onclick="appendNumber('1')">1</button>
             <button onclick="appendNumber('2')">2</button>
             <button onclick="appendNumber('3')">3</button>
-            <button onclick="clearDisplay()">C</button>
+            <button onclick="appendNumber('.')">.</button>
+
             <button style="grid-column: span 4;" onclick="appendNumber('0')">0</button>
         </div>
     </div>
