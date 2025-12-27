@@ -1,9 +1,7 @@
-// Константи и променливи
 const EXCHANGE_RATE = 1.95583;
 let currentInput = "";
 let isMuted = false;
 
-// Инициализация на гласово разпознаване
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = null;
 
@@ -12,9 +10,7 @@ if (SpeechRecognition) {
     recognition.lang = 'bg-BG';
     recognition.interimResults = false;
 
-    // Защита от блокиране при грешка
     recognition.onerror = function(event) {
-        console.error("Грешка при микрофона:", event.error);
         stopMicAnimation();
         recognition.stop();
     };
@@ -29,7 +25,6 @@ if (SpeechRecognition) {
     };
 }
 
-// Функции за изчисления
 function appendNumber(number) {
     currentInput += number;
     updateDisplay();
@@ -39,7 +34,6 @@ function appendNumber(number) {
 function updateDisplay() {
     const bgnField = document.getElementById('bgn-input');
     const eurField = document.getElementById('eur-input');
-    
     if (bgnField && eurField) {
         let val = parseFloat(currentInput) || 0;
         bgnField.value = val.toFixed(2);
@@ -53,19 +47,14 @@ function clearDisplay() {
     speak("Изчистване");
 }
 
-// Функция за говорене със защита (Mute)
 function speak(text) {
     if (isMuted || !window.speechSynthesis) return;
-    
-    // Спираме текущото говорене, за да не се застъпват
     window.speechSynthesis.cancel();
-    
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'bg-BG';
     window.speechSynthesis.speak(utterance);
 }
 
-// Функция за Mute
 function toggleMute() {
     isMuted = !isMuted;
     const muteBtn = document.getElementById('mute-btn');
@@ -74,10 +63,9 @@ function toggleMute() {
     }
 }
 
-// Работа с микрофона
 function startVoice() {
     if (!recognition) {
-        alert("Браузърът ви не поддържа гласови команди.");
+        alert("Браузърът не поддържа глас.");
         return;
     }
     try {
@@ -104,4 +92,4 @@ function startMicAnimation() {
 
 function stopMicAnimation() {
     document.getElementById('mic-btn').classList.remove('pulse');
-}
+} // ТАЗИ СКОБА ЛИПСВАШЕ И ПРАВЕШЕ ПРОБЛЕМА!
